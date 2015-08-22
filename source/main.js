@@ -85,7 +85,6 @@ for(var i in Memory.creeps) {
 //Make creeps do things
 //construction.buildRoadToAllSources();
 
-construction.buildRoadToAllSources();
 
 for(var name in Game.creeps) {
   var creep = Game.creeps[name];
