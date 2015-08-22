@@ -10,14 +10,14 @@
     -Make hash from body-part name to body-part cost
 */
 // Your code goes here...
-var harvester = require('harvester.js');
-var builder = require('builder.js');
-var guard = require('guard.js');
-var claimer = require('claimer.js');
-var elderly = require('elderly.js');
-var storer = require('storer.js');
-var repairman = require('repairman.js');
-var collector = require('collector.js');
+var harvester = require('harvester');
+var builder = require('builder');
+var guard = require('guard');
+var claimer = require('claimer');
+var elderly = require('elderly');
+var storer = require('storer');
+var repairman = require('repairman');
+var collector = require('collector');
 
 Memory.max_creep_count = 25;
 Memory.min_harvester_count = 2;
