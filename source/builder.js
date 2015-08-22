@@ -53,4 +53,4 @@ module.exports = function (creep, damaged, roomFlag, buildpriority, spawn) {
           }
         }
     }
-
+}
