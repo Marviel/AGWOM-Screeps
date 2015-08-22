@@ -29,13 +29,13 @@ Memory.min_collector_count = 2;
 
 var guardpos = new RoomPosition(31, 28, 'W4S8');
 
-var harvesterparts = [WORK, WORK, WORK, WORK, MOVE];
+var harvesterparts = [WORK, WORK, MOVE];
 var guardparts = [WORK, WORK, CARRY, CARRY, MOVE];
 var claimerparts = [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
 var builderparts = [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE];
 var storerparts = [CARRY,CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
 var repairmanparts = [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
-var collectorparts = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
+var collectorparts = [CARRY, CARRY, MOVE, MOVE];
 
 var buildpriority = STRUCTURE_ROAD;
 
