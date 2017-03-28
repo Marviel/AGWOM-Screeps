@@ -155,19 +155,30 @@ for(var name in Game.spawns) {
     weight_harvester = 2/harvestercount;
     weight_collector = 2/collectorcount;
     weight_repairman = 1/repairmancount;
+    weight_builder = 1/buildercount;
     console.log("--SPAWN WEIGHTS--")
     console.log("weight_harvester: " + weight_harvester)
     console.log("weight_collector: " + weight_collector)
     console.log("weight_repairman: " + weight_repairman)
 
-    if(weight_harvester >= weight_collector && weight_harvester >= weight_repairman){
+    if(weight_harvester >= weight_collector && 
+       weight_harvester >= weight_repairman &&
+       weight_harvester >= weight_builder){
       //TODO for loop with a low thresh.
       var ret = spawn.createCreep(lightweightharvesterparts, null, {role: 'harvester'});
     }
-    else if (weight_collector >= weight_harvester && weight_collector >= weight_repairman){
+    else if (weight_collector >= weight_harvester && 
+             weight_collector >= weight_repairman &&
+             weight_collector >= weight_builder){
       var ret = spawn.createCreep(lightweight_collector_parts, null, {role: 'collector'});
     }
-    else{
+    else if (weight_repairman >= weight_harvester && 
+             weight_repairman >= weight_collector &&
+             weight_repairman >= weight_builder){
       var ret = spawn.createCreep(lightweight_repairman_parts, null, {role: 'repairman'});
     }
+    else{
+      var ret = spawn.createCreep(builderparts, null, {role: 'builder'});
+    }
+
 }
