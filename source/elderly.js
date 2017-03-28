@@ -12,6 +12,6 @@ module.exports = function (creep){
     }
     else{
         creep.moveTo(Game.spawns.Spawn1);
-    creep.transferEnergy(Game.spawns.Spawn1);
+    creep.transfer(Game.spawns.Spawn1, RESOURCE_ENERGY);
     }
 }
