@@ -155,7 +155,7 @@ for(var name in Game.spawns) {
     weight_harvester = 2/harvestercount;
     weight_collector = 2/collectorcount;
     weight_repairman = 1/repairmancount;
-    console.log("--SPAWN WEIGHTS--
+    console.log("--SPAWN WEIGHTS--")
     console.log("weight_harvester: " + weight_harvester)
     console.log("weight_collector: " + weight_collector)
     console.log("weight_repairman: " + weight_repairman)
