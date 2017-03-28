@@ -7,45 +7,45 @@
  */
  
 module.exports = function (creep, damaged, roomFlag, buildpriority, spawn) {
-    if(creep.ticksToLive < 60){
-        creep.memory.role = 'elderly';
-    }
-    else{
-        if(creep.room != roomFlag.room && creep.carry.energy != 0){
-            creep.moveTo(roomFlag)
-        }
-        if(creep.carry.energy == 0) {
-            var storloc;
-              if(creep.room.storage != null){
-                  storloc = creep.room.storage;
+  if(creep.ticksToLive < 60){
+      creep.memory.role = 'elderly';
+  }
+  else
+  {
+      if(creep.room != roomFlag.room && creep.carry.energy != 0){
+          creep.moveTo(roomFlag)
+      }
+      if(creep.carry.energy == 0) {
+          var storloc;
+            if(creep.room.storage != null){
+                storloc = creep.room.storage;
+            }
+            else{
+                storloc = spawn
+            }
+          
+            creep.moveTo(storloc);
+            storloc.transfer(creep, RESOURCE_ENERGY);
+      }
+      else{
+            creep.moveTo(Game.flags.waitforspawner);
+      }
+      var prioritytarget = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
+              filter: function (object) {
+                  return object.type = buildpriority;
               }
-              else{
-                  storloc = spawn
-              }
-            
-              creep.moveTo(storloc);
-              storloc.transferEnergy(creep);
-        }
-        else{
-              creep.moveTo(Game.flags.waitforspawner);
-        }
-        var prioritytarget = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
-                filter: function (object) {
-                    return object.type = buildpriority;
-                }
-        });
-            
-        var targets;
-        if(prioritytarget){ targets = [prioritytarget]; }
-        else{ targets = creep.room.find(FIND_CONSTRUCTION_SITES);}
-        
-        if(targets.length) {
-          creep.moveTo(targets[0]);
-          creep.build(targets[0]);
-        }
-        else{
-            creep.moveTo(Game.flags.idlebuilder1);
-        }
+      });
+          
+      var targets;
+      if(prioritytarget){ targets = [prioritytarget]; }
+      else{ targets = creep.room.find(FIND_CONSTRUCTION_SITES);}
+      
+      if(targets.length) {
+        creep.moveTo(targets[0]);
+        creep.build(targets[0]);
+      }
+      else{
+          creep.moveTo(Game.flags.idlebuilder1);
       }
     }
 }
