@@ -29,13 +29,19 @@ Memory.min_collector_count = 2;
 
 var guardpos = new RoomPosition(31, 28, 'W4S8');
 
+var harvester_main_parts = [WORK, MOVE];
+var guard_main_parts = [WORK, CARRY, MOVE];
+var collector_main_parts = [CARRY, MOVE];
+
 var harvesterparts = [WORK, WORK, WORK, WORK, MOVE];
+var lightweightharvesterparts = [WORK, WORK, MOVE];
 var guardparts = [WORK, WORK, CARRY, CARRY, MOVE];
 var claimerparts = [WORK, WORK, CARRY, MOVE];
 var builderparts = [WORK, WORK, CARRY,  MOVE];
 var storerparts = [CARRY,CARRY, CARRY, CARRY, CARRY, MOVE, MOVE];
 var repairmanparts = [WORK, CARRY, MOVE, MOVE];
 var collectorparts = [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE];
+var lightweight_collector_parts = [CARRY, CARRY, MOVE];
 
 var buildpriority = STRUCTURE_ROAD;
 
@@ -50,9 +56,6 @@ var repairmancount = 0;
 var collectorcount = 0;
 var mining = 0;
 var maxminers = 4;
-var minerwaitloc = new RoomPosition(21, 33, 'W4S8');
-
-
 
 Memory.extensions = {};
 Memory.nonfull_extensions = [];
@@ -95,7 +98,7 @@ for(var name in Game.creeps) {
   }
 
   if(creep.memory.role == 'builder') {
-      builder(creep, Memory.damaged_structures[0], Game.flags.room2, 'road', Game.spawns.Spawn1);
+      builder(creep, Memory.damaged_structures[0], Game.flags.room1, 'road', Game.spawns.Spawn1);
       buildercount++;
   }
   if(creep.memory.role == 'guard') {
@@ -112,7 +115,7 @@ for(var name in Game.creeps) {
         repairmancount++;
   }
   if(creep.memory.role == 'claimer') {
-      claimer(creep, Game.flags.room2);
+      claimer(creep, Game.flags.room1);
         claimercount++;
   }
   if(creep.memory.role == 'collector') {
@@ -129,10 +132,34 @@ for(var name in Game.creeps) {
 Memory.harvestercount = harvestercount;
 Memory.collectorcount = collectorcount;
 
+
+
 //Make spawns do things
 for(var name in Game.spawns) {
-  var spawn = Game.spawns[name];
-    if(creepcount < Memory.max_creep_count) {
+    var spawn = Game.spawns[name];
+    
+    //TODO Logic here to determine weighting for each worker type. Below just takes weighting and produces each type in order.
+    //...after that, weighting for each *need*
+    //-----------------------
+    var weight_harvester = 0;
+    var weight_collector = 0;
+    var weight_repairman = 0;
+    
+    //=========================================================================
+    //If we're starving.........
+    //=========================================================================
+    if(creepcount < Memory.starving_thresh){
+        if(harvestercount < 1){
+            //Create the most expensive harvester we can with all its parts.
+            var ret = spawn.createCreep(lightweightharvesterparts, null, {role: 'harvester'});
+        }
+        else{
+            //Create the most expensive collector we can with all its parts.
+            var ret = spawn.createCreep(lightweight_collector_parts, null, {role: 'collector'});
+        }
+    }
+    //If we're not starving...
+    else if(creepcount < Memory.max_creep_count) {
         console.log('trying repairman')
         if(repairmancount < Memory.min_repairman_count && spawn.canCreateCreep(repairmanparts, null) == OK){
                spawn.createCreep(repairmanparts, null, {role: 'repairman'});
@@ -140,7 +167,7 @@ for(var name in Game.spawns) {
         else{
         console.log('trying harvester')
       if(harvestercount < Memory.min_harvester_count && spawn.canCreateCreep(harvesterparts, null) == OK){
-          spawn.createCreep(harvesterparts, null, {role: 'harvester'});
+          spawn.createCreep(lightweightharvesterparts, null, {role: 'harvester'});
       }
       else{
       if(collectorcount < Memory.min_collector_count && spawn.canCreateCreep(collectorparts, null) == OK){
