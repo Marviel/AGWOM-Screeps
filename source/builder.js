@@ -33,7 +33,7 @@ module.exports = function (creep, damaged, roomFlag, buildpriority, spawn) {
             }
           }
           else {
-            var prioritytarget = creep.pos.findClosest(FIND_CONSTRUCTION_SITES, {
+            var prioritytarget = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
                     filter: function (object) {
                         return object.type = buildpriority;
                     }
