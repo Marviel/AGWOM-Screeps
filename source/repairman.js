@@ -28,7 +28,7 @@ module.exports = function (creep, damaged, flagloc) {
         }
       }
       else {
-          var repair = creep.pos.findClosest(FIND_STRUCTURES, {
+          var repair = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function (object) {
                     return object.hits < object.hitsMax;
                 }
