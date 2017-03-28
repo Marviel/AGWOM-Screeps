@@ -30,7 +30,6 @@ Memory.min_collector_count = 2;
 var guardpos = new RoomPosition(31, 28, 'W4S8');
 
 var harvester_main_parts = [WORK, MOVE];
-var guard_main_parts = [WORK, CARRY, MOVE];
 var collector_main_parts = [CARRY, MOVE];
 
 var harvesterparts = [WORK, WORK, WORK, WORK, MOVE];
@@ -160,6 +159,7 @@ for(var name in Game.spawns) {
     console.log("weight_harvester: " + weight_harvester)
     console.log("weight_collector: " + weight_collector)
     console.log("weight_repairman: " + weight_repairman)
+    console.log("weight_builder: " + weight_builder)
 
     if(weight_harvester >= weight_collector && 
        weight_harvester >= weight_repairman &&

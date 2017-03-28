@@ -20,8 +20,8 @@
         creep.pickup(sources[0]);
       }
       else {
-            creep.moveTo(Game.spawns.Spawn1);
-        creep.transferEnergy(Game.spawns.Spawn1);
+            creep.moveTo(creep.room.controller);
+        creep.transfer(creep.room.controller, RESOURCE_ENERGY);
       }
     }
 }
