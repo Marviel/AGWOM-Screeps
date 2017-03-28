@@ -40,6 +40,7 @@ var claimerparts = [WORK, WORK, CARRY, MOVE];
 var builderparts = [WORK, WORK, CARRY,  MOVE];
 var storerparts = [CARRY,CARRY, CARRY, CARRY, CARRY, MOVE, MOVE];
 var repairmanparts = [WORK, CARRY, MOVE, MOVE];
+var lightweight_repairman_parts = [WORK, CARRY, MOVE];
 var collectorparts = [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE];
 var lightweight_collector_parts = [CARRY, CARRY, MOVE];
 
@@ -88,7 +89,10 @@ for(var i in Memory.creeps) {
 //Make creeps do things
 //construction.buildRoadToAllSources();
 
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//---------------------------------------------------------------------------------------
+//=-------------------------------ROLE ASSIGNMENT---------------------------------------
+//////////////////////////////////////////////////////////////////////////////////////////
 for(var name in Game.creeps) {
   var creep = Game.creeps[name];
 
@@ -132,7 +136,10 @@ for(var name in Game.creeps) {
 Memory.harvestercount = harvestercount;
 Memory.collectorcount = collectorcount;
 
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//---------------------------------------------------------------------------------------
+//=-------------------------------SPAWNS -------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////////////////
 
 //Make spawns do things
 for(var name in Game.spawns) {
@@ -144,61 +151,23 @@ for(var name in Game.spawns) {
     var weight_harvester = 0;
     var weight_collector = 0;
     var weight_repairman = 0;
-    
-    //=========================================================================
-    //If we're starving.........
-    //=========================================================================
-    if(creepcount < Memory.starving_thresh){
-        if(harvestercount < 1){
-            //Create the most expensive harvester we can with all its parts.
-            var ret = spawn.createCreep(lightweightharvesterparts, null, {role: 'harvester'});
-        }
-        else{
-            //Create the most expensive collector we can with all its parts.
-            var ret = spawn.createCreep(lightweight_collector_parts, null, {role: 'collector'});
-        }
+   
+    weight_harvester = 2/harvestercount;
+    weight_collector = 2/collectorcount;
+    weight_repairman = 1/repairmancount;
+    console.log("--SPAWN WEIGHTS--
+    console.log("weight_harvester: " + weight_harvester)
+    console.log("weight_collector: " + weight_collector)
+    console.log("weight_repairman: " + weight_repairman)
+
+    if(weight_harvester >= weight_collector && weight_harvester >= weight_repairman){
+      //TODO for loop with a low thresh.
+      var ret = spawn.createCreep(lightweightharvesterparts, null, {role: 'harvester'});
     }
-    //If we're not starving...
-    else if(creepcount < Memory.max_creep_count) {
-        console.log('trying repairman')
-        if(repairmancount < Memory.min_repairman_count && spawn.canCreateCreep(repairmanparts, null) == OK){
-               spawn.createCreep(repairmanparts, null, {role: 'repairman'});
-        }
-        else{
-        console.log('trying harvester')
-      if(harvestercount < Memory.min_harvester_count && spawn.canCreateCreep(harvesterparts, null) == OK){
-          spawn.createCreep(lightweightharvesterparts, null, {role: 'harvester'});
-      }
-      else{
-      if(collectorcount < Memory.min_collector_count && spawn.canCreateCreep(collectorparts, null) == OK){
-          spawn.createCreep(collectorparts, null, {role: 'collector'});
-      }
-      else{
-      if(storercount < Memory.min_storer_count && spawn.canCreateCreep(storerparts, null) == OK){
-            spawn.createCreep(storerparts, null, {role: 'storer'});
-        }
-        else{
-        if(claimercount < Memory.min_claimer_count && spawn.canCreateCreep(claimerparts, null) == OK){
-            spawn.createCreep(claimerparts, null, {role: 'claimer'});
-        }
-        else{
-        if(buildercount < Memory.min_builder_count && spawn.canCreateCreep(builderparts, null) == OK){
-            spawn.createCreep(builderparts, null, {role: 'builder'});
-        }}}}}}
+    else if (weight_collector >= weight_harvester && weight_collector >= weight_repairman){
+      var ret = spawn.createCreep(lightweight_collector_parts, null, {role: 'collector'});
     }
     else{
-        //spawn.createCreep([ATTACK, TOUGH, MOVE], null, {role: 'guard'});
+      var ret = spawn.createCreep(lightweight_repairman_parts, null, {role: 'repairman'});
     }
 }
-// //var hostiles = Game.flags.room2.room.find(FIND_HOSTILE_CREEPS);
-// if(hostiles.length > 0){
-//     console.log('found enemy creeps!');
-// }
-// var externalFlags = [Game.flags.room1]
-// for(var fl in externalFlags) {
-//     console.log(fl.name + "huh?")
-//     var hostiles = fl.room.find(FIND_HOSTILE_CREEPS);
-//     if(hostiles){
-//         console.log(name + ': found enemy creeps!');
-//     }
-// }
