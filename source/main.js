@@ -187,37 +187,29 @@ for(var name in Game.creeps) {
 
   if(creep.memory.role == 'harvester') {
     harvester(creep, firstroomflag); 
-    harvestercount++;
   }
 
   else if(creep.memory.role == 'builder') {
       builder(creep, Memory.damaged_structures[0], firstroomflag, 'road', Game.spawns.Spawn1);
-      buildercount++;
   }
   else if(creep.memory.role == 'guard') {
         guard(creep, guardpos);
-        guardcount++;
   }
   else if(creep.memory.role == 'storer') {
       var energyloc = Memory.nonfull_extensions[0];
       storer(creep, Game.spawns.Spawn1, energyloc);
-        storercount++;
   }
   else if(creep.memory.role == 'repairman') {
       repairman(creep, Memory.damaged_structures[0]);
-        repairmancount++;
   }
   else if(creep.memory.role == 'claimer') {
       claimer(creep, firstroomflag);
-        claimercount++;
   }
   else if(creep.memory.role == 'collector') {
       collector(creep, firstroomflag);
-        collectorcount++;
   }
   else if(creep.memory.role == 'elderly') { //Do this last so we can still move this turn if the unit is aged
       elderly(creep);
-      elderlycount++;
   }
   creepcount++;
 }
