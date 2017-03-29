@@ -27,6 +27,7 @@ Memory.min_builder_count = 2;
 Memory.min_storer_count = 3;
 Memory.min_repairman_count = 1;
 Memory.min_collector_count = 2;
+MAX_HARVESTERS = 3;
 
 var guardpos = new RoomPosition(31, 28, 'W4S8');
 
@@ -252,6 +253,7 @@ for(var name in Game.spawns) {
     var weight_repairman = 0;
    
     weight_harvester = 2/harvestercount;
+    if(harvestercount >= MAX_HARVESTERS){ weight_harvester = 0}
     weight_collector = 2/collectorcount;
     weight_repairman = 1/repairmancount;
     weight_builder = 1/buildercount;
