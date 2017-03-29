@@ -9,6 +9,20 @@
     -ice: Make harvesters in rooms without extensions spawn with few attachments... same for collectors.
     -Make hash from body-part name to body-part cost
 */
+
+/* creeptypes = {'name': {'spawn_weight': float, 
+ *                        cur_count: int,
+ *                        min_count: int or undefined,
+ *                        max_count: int or undefined,
+ *                        
+ *                        basic_parts: [WORK, ...]}, 
+ *                        part_weights: [1, 2, ...],
+ *                        work_function: function(),
+ *
+ *                        
+ *                        ...}*/
+
+
 // Your code goes here...
 var harvester = require('harvester');
 var builder = require('builder');
@@ -260,8 +274,9 @@ if(firstroomflag.room.energyAvailable > min_spawn_energy ||
       weight_harvester = 2/harvestercount;
       if(harvestercount >= MAX_HARVESTERS){ weight_harvester = 0}
       weight_collector = 2/collectorcount;
-      weight_repairman = 1/repairmancount;
+      weight_repairman = .5/repairmancount;
       weight_builder = 1/buildercount;
+      weight_claimer = 1/claimercount;
       console.log("--SPAWN WEIGHTS--")
       console.log("weight_harvester: " + weight_harvester)
       console.log("weight_collector: " + weight_collector)
