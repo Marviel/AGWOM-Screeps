@@ -263,11 +263,11 @@ for(var name in Game.spawns) {
        weight_harvester >= weight_repairman &&
        weight_harvester >= weight_builder){
       //TODO for loop with a low thresh.
-      var last_able = harvestermainparts;
+      var last_able = harvester_main_parts;
       var this_one = last_able;
       while(spawn.canCreateCreep(this_one)){
         last_able = this_one;
-        this_one = this_one.concat(harvestermainparts);
+        this_one = this_one.concat(harvester_main_parts);
       }
 
       var ret = spawn.createCreep(last_able, null, {role: 'harvester'});
