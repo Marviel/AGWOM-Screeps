@@ -29,6 +29,7 @@ Memory.min_repairman_count = 1;
 Memory.min_collector_count = 2;
 MAX_HARVESTERS = 3;
 
+var spawnInterval = 200;
 var guardpos = new RoomPosition(31, 28, 'W4S8');
 
 var harvester_main_parts = [WORK, MOVE];
@@ -240,63 +241,64 @@ Memory.collectorcount = collectorcount;
 //---------------------------------------------------------------------------------------
 //=-------------------------------SPAWNS -------------------------------------------------
 //////////////////////////////////////////////////////////////////////////////////////////
+if(Memory.lastSpawn == undefined){ Memory.lastSpawn = Game.time }
+if(Game.time - Memory.lastSpawn > spawnInterval){
+  Memory.lastSpawn = Game.time;
+  //Make spawns do things
+  for(var name in Game.spawns) {
+      var spawn = Game.spawns[name];
+      
+      //TODO Logic here to determine weighting for each worker type. Below just takes weighting and produces each type in order.
+      //...after that, weighting for each *need*
+      //-----------------------
+      var weight_harvester = 0;
+      var weight_collector = 0;
+      var weight_repairman = 0;
+     
+      weight_harvester = 2/harvestercount;
+      if(harvestercount >= MAX_HARVESTERS){ weight_harvester = 0}
+      weight_collector = 2/collectorcount;
+      weight_repairman = 1/repairmancount;
+      weight_builder = 1/buildercount;
+      console.log("--SPAWN WEIGHTS--")
+      console.log("weight_harvester: " + weight_harvester)
+      console.log("weight_collector: " + weight_collector)
+      console.log("weight_repairman: " + weight_repairman)
+      console.log("weight_builder: " + weight_builder)
 
-//Make spawns do things
-for(var name in Game.spawns) {
-    var spawn = Game.spawns[name];
-    
-    //TODO Logic here to determine weighting for each worker type. Below just takes weighting and produces each type in order.
-    //...after that, weighting for each *need*
-    //-----------------------
-    var weight_harvester = 0;
-    var weight_collector = 0;
-    var weight_repairman = 0;
-   
-    weight_harvester = 2/harvestercount;
-    if(harvestercount >= MAX_HARVESTERS){ weight_harvester = 0}
-    weight_collector = 2/collectorcount;
-    weight_repairman = 1/repairmancount;
-    weight_builder = 1/buildercount;
-    console.log("--SPAWN WEIGHTS--")
-    console.log("weight_harvester: " + weight_harvester)
-    console.log("weight_collector: " + weight_collector)
-    console.log("weight_repairman: " + weight_repairman)
-    console.log("weight_builder: " + weight_builder)
+      if(weight_harvester >= weight_collector && 
+         weight_harvester >= weight_repairman &&
+         weight_harvester >= weight_builder){
+        //TODO for loop with a low thresh.
+        var last_able = harvester_main_parts;
+        var this_one = last_able;
+        while(spawn.canCreateCreep(this_one) == OK){
+          last_able = this_one;
+          this_one = this_one.concat(harvester_main_parts);
+        }
 
-    if(weight_harvester >= weight_collector && 
-       weight_harvester >= weight_repairman &&
-       weight_harvester >= weight_builder){
-      //TODO for loop with a low thresh.
-      var last_able = harvester_main_parts;
-      var this_one = last_able;
-      while(spawn.canCreateCreep(this_one) == OK){
-        last_able = this_one;
-        this_one = this_one.concat(harvester_main_parts);
+        var ret = spawn.createCreep(last_able, null, {role: 'harvester'});
+      }
+      else if (weight_collector >= weight_harvester && 
+               weight_collector >= weight_repairman &&
+               weight_collector >= weight_builder){
+        var last_able = collector_main_parts;
+        var this_one = last_able;
+        while(spawn.canCreateCreep(this_one) == OK){
+          last_able = this_one;
+          this_one = this_one.concat(collector_main_parts);
+        }
+
+        var ret = spawn.createCreep(last_able, null, {role: 'collector'});
+      }
+      else if (weight_repairman >= weight_harvester && 
+               weight_repairman >= weight_collector &&
+               weight_repairman >= weight_builder){
+        var ret = spawn.createCreep(lightweight_repairman_parts, null, {role: 'repairman'});
+      }
+      else{
+        var ret = spawn.createCreep(builderparts, null, {role: 'builder'});
       }
 
-      var ret = spawn.createCreep(last_able, null, {role: 'harvester'});
-    }
-    else if (weight_collector >= weight_harvester && 
-             weight_collector >= weight_repairman &&
-             weight_collector >= weight_builder){
-      var last_able = collector_main_parts;
-      var this_one = last_able;
-      while(spawn.canCreateCreep(this_one) == OK){
-        last_able = this_one;
-        this_one = this_one.concat(collector_main_parts);
-      }
-
-      var ret = spawn.createCreep(last_able, null, {role: 'collector'});
-    }
-    else if (weight_repairman >= weight_harvester && 
-             weight_repairman >= weight_collector &&
-             weight_repairman >= weight_builder){
-      var ret = spawn.createCreep(lightweight_repairman_parts, null, {role: 'repairman'});
-    }
-    else{
-      var ret = spawn.createCreep(builderparts, null, {role: 'builder'});
-    }
-
+  }
 }
-
-Memory.timestep = Game.time;
