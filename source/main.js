@@ -29,6 +29,7 @@ Memory.min_repairman_count = 1;
 Memory.min_collector_count = 2;
 MAX_HARVESTERS = 3;
 
+var min_spawn_energy = 300;
 var spawnInterval = 200;
 var guardpos = new RoomPosition(31, 28, 'W4S8');
 
@@ -242,7 +243,8 @@ Memory.collectorcount = collectorcount;
 //=-------------------------------SPAWNS -------------------------------------------------
 //////////////////////////////////////////////////////////////////////////////////////////
 if(Memory.lastSpawn == undefined){ Memory.lastSpawn = Game.time }
-if(Game.time - Memory.lastSpawn > spawnInterval){
+if(firstroomflag.room.energyAvailable > min_spawn_energy ||
+    Game.spawnsGame.time - Memory.lastSpawn > spawnInterval){
   Memory.lastSpawn = Game.time;
   //Make spawns do things
   for(var name in Game.spawns) {
