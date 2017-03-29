@@ -11,13 +11,12 @@
         creep.memory.role = 'elderly';
     }
     else{
-        if(creep.room != roomFlag.room){
-            creep.moveTo(roomFlag)
-        }
-        else{
-            var sources = creep.room.find(FIND_SOURCES);
-            creep.moveTo(sources[0]);
-            creep.harvest(sources[0]);
-        }
+        var sources = creep.pos.findClosestByRange(FIND_SOURCES, {
+          filter: function (object) {
+              return object.room = roomFlag.room;
+          }
+        });
+        creep.moveTo(sources[0]);
+        creep.harvest(sources[0]);    
     }
 }

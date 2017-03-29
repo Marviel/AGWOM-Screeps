@@ -18,6 +18,7 @@ var elderly = require('elderly');
 var storer = require('storer');
 var repairman = require('repairman');
 var collector = require('collector');
+var firstroomflag = Game.flags.ROOM1;
 
 Memory.max_creep_count = 25;
 Memory.min_harvester_count = 2;
@@ -143,7 +144,7 @@ function update_percents(){
 var builder_weight_now = 1/3;
 var claimer_weight_now = 1/3;
 var repairman_weight_now = 1/3;
-extra_build_weight = 1/(Game.flags.room1.room.energyCapacityAvailable);
+extra_build_weight = 1/(firstroomflag.room.energyCapacityAvailable);
 builder_weight_now += extra_build_weight;
 claimer_weight_now -= extra_build_weight/2;
 repairman_weight_now -= extra_build_weight/2;
@@ -185,12 +186,12 @@ for(var name in Game.creeps) {
   var creep = Game.creeps[name];
 
   if(creep.memory.role == 'harvester') {
-    harvester(creep, Game.flags.room1); 
+    harvester(creep, firstroomflag); 
     harvestercount++;
   }
 
   else if(creep.memory.role == 'builder') {
-      builder(creep, Memory.damaged_structures[0], Game.flags.room1, 'road', Game.spawns.Spawn1);
+      builder(creep, Memory.damaged_structures[0], firstroomflag, 'road', Game.spawns.Spawn1);
       buildercount++;
   }
   else if(creep.memory.role == 'guard') {
@@ -207,11 +208,11 @@ for(var name in Game.creeps) {
         repairmancount++;
   }
   else if(creep.memory.role == 'claimer') {
-      claimer(creep, Game.flags.room1);
+      claimer(creep, firstroomflag);
         claimercount++;
   }
   else if(creep.memory.role == 'collector') {
-      collector(creep, Game.flags.room1);
+      collector(creep, firstroomflag);
         collectorcount++;
   }
   else if(creep.memory.role == 'elderly') { //Do this last so we can still move this turn if the unit is aged
