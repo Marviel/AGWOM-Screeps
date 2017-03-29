@@ -15,7 +15,9 @@ module.exports = function (creep, damaged, roomFlag, buildpriority, spawn) {
       if(creep.room != roomFlag.room && creep.carry.energy != 0){
           creep.moveTo(roomFlag)
       }
-      if(creep.carry.energy == 0) {
+      if(creep.carry.energy == 0 && 
+          Memory.harvestercount >= Memory.min_harvester_count &&
+          Memory.collectorcount >= Memory.min_collector_count) {
           var storloc;
             if(creep.room.storage != null){
                 storloc = creep.room.storage;
