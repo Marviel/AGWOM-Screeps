@@ -167,7 +167,7 @@ claimer_weight_now -= extra_build_weight/2;
 repairman_weight_now -= extra_build_weight/2;
 
 if(Memory.last_conversion_timestep == undefined){ Memory.last_conversion_timestep = Game.time }
-if(Game.time - Memory.last_conversion_timestep > 1000){
+if(Game.time - Memory.last_conversion_timestep > 200){
   Memory.last_conversion_timestep = Game.time;
   //Convert creeps to approximate our new weights
   for(var name in Game.creeps){
@@ -257,7 +257,7 @@ Memory.collectorcount = collectorcount;
 //=-------------------------------SPAWNS -------------------------------------------------
 //////////////////////////////////////////////////////////////////////////////////////////
 if(Memory.lastSpawn == undefined){ Memory.lastSpawn = Game.time }
-if(firstroomflag.room.energyAvailable > min_spawn_energy ||
+if(firstroomflag.room.energyAvailable >= min_spawn_energy ||
     Game.time - Memory.lastSpawn > spawnInterval){
   Memory.lastSpawn = Game.time;
   //Make spawns do things
