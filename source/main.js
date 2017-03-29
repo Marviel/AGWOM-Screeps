@@ -141,9 +141,18 @@ function update_percents(){
   repairman_percent = repairmancount/total_normal_workers;
 }
 
-var builder_weight_now = 1/3;
-var claimer_weight_now = 1/3;
-var repairman_weight_now = 1/3;
+
+//TODO need to think about proportions we want of each at different times.
+//    1. Starvation (no harvesters/collector)
+//    2. Semi-starvation (no havestors OR no collectors)
+//    3. Some harvesters and collectors
+//    4. Too many harvesters and collectors
+//    5. A large number of creeps
+var harvester_weight_now = 1/5;
+var collector_weight_now = 1/5
+var builder_weight_now = 1/5;
+var claimer_weight_now = 1/5;
+var repairman_weight_now = 1/5;
 extra_build_weight = 1/(firstroomflag.room.energyCapacityAvailable);
 builder_weight_now += extra_build_weight;
 claimer_weight_now -= extra_build_weight/2;
