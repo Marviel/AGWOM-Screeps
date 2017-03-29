@@ -15,9 +15,8 @@
             creep.moveTo(roomFlag)
         }
       if(creep.carry.energy < creep.carryCapacity) {
-        var sources = creep.room.find(FIND_DROPPED_ENERGY);
-        creep.moveTo(sources[0]);
-        creep.pickup(sources[0]);
+        creep.moveTo(spawn);
+        creep.withdraw(spawn, RESOURCE_ENERGY); 
       }
       else {
             creep.moveTo(creep.room.controller);

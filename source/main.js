@@ -224,7 +224,7 @@ for(var name in Game.creeps) {
       repairman(creep, Memory.damaged_structures[0]);
   }
   else if(creep.memory.role == 'claimer') {
-      claimer(creep, firstroomflag);
+      claimer(creep, firstroomflag, Game.spawns.Spawn1);
   }
   else if(creep.memory.role == 'collector') {
       collector(creep, firstroomflag);
