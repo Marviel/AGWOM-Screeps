@@ -157,25 +157,41 @@ for(var name in Game.creeps){
   //If the weight of the builder isn't satisfied, satisfy that first.
   if(builder_weight_now > builder_percent 
       && (creep.memory.role == "claimer" || creep.memory.role == "repairman")){
+    if(creep.memory.role == "claimer"){
+      claimercount -= 1;
+    }
+    else if(creep.memory.role == "repairman"){
+      repairmancount -= 1;
+    }
+    
     creep.memory.role = "builder";
     buildercount += 1;
-    claimercount -= 1;
-    repairmancount -= 1;
     update_percents();
   }
   else if(claimer_weight_now - claimer_percent > .1
             && (creep.memory.role == "repairman" || creep.memory.role == "builder")){
+    if(creep.memory.role == "builder"){
+      buildercount -= 1;
+    }
+    else if(creep.memory.role == "repairman"){
+      repairmancount -= 1;
+    }
+    
     creep.memory.role = "claimer";
-    buildercount -= 1;
     claimercount += 1;
-    repairmancount -= 1;
     update_percents();
   }
   else if(repairman_weight_now - repairman_percent > .1 &&
           (creep.memory.role == "claimer" || creep.memory.role == "builder")){
+    if(creep.memory.role == "claimer"){
+      claimercount -= 1;
+    }
+    else if(creep.memory.role == "builder"){
+      buildercount -= 1;
+    }
+
+    
     creep.memory.role = "repairman";
-    buildercount -= 1;
-    claimercount -= 1;
     repairmancount += 1;
     update_percents();
   }
