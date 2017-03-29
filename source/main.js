@@ -149,54 +149,56 @@ builder_weight_now += extra_build_weight;
 claimer_weight_now -= extra_build_weight/2;
 repairman_weight_now -= extra_build_weight/2;
 
-
-//Convert creeps to approximate our new weights
-for(var name in Game.creeps){
-  var creep = Game.creeps[name];
-  
-  //If the weight of the builder isn't satisfied, satisfy that first.
-  if(builder_weight_now > builder_percent 
-      && (creep.memory.role == "claimer" || creep.memory.role == "repairman")){
-    if(creep.memory.role == "claimer"){
-      claimercount -= 1;
-    }
-    else if(creep.memory.role == "repairman"){
-      repairmancount -= 1;
-    }
+if(Memory.last_conversion_timestep == undefined){ Memory.last_conversion_timestep = Game.time }
+if(Game.time - Memory.last_conversion_timestep > 1000){
+  Memory.last_conversion_timestep = Game.time;
+  //Convert creeps to approximate our new weights
+  for(var name in Game.creeps){
+    var creep = Game.creeps[name];
     
-    creep.memory.role = "builder";
-    buildercount += 1;
-    update_percents();
-  }
-  else if(claimer_weight_now - claimer_percent > .1
-            && (creep.memory.role == "repairman" || creep.memory.role == "builder")){
-    if(creep.memory.role == "builder"){
-      buildercount -= 1;
+    //If the weight of the builder isn't satisfied, satisfy that first.
+    if(builder_weight_now > builder_percent 
+        && (creep.memory.role == "claimer" || creep.memory.role == "repairman")){
+      if(creep.memory.role == "claimer"){
+        claimercount -= 1;
+      }
+      else if(creep.memory.role == "repairman"){
+        repairmancount -= 1;
+      }
+      
+      creep.memory.role = "builder";
+      buildercount += 1;
+      update_percents();
     }
-    else if(creep.memory.role == "repairman"){
-      repairmancount -= 1;
+    else if(claimer_weight_now - claimer_percent > .1
+              && (creep.memory.role == "repairman" || creep.memory.role == "builder")){
+      if(creep.memory.role == "builder"){
+        buildercount -= 1;
+      }
+      else if(creep.memory.role == "repairman"){
+        repairmancount -= 1;
+      }
+      
+      creep.memory.role = "claimer";
+      claimercount += 1;
+      update_percents();
     }
-    
-    creep.memory.role = "claimer";
-    claimercount += 1;
-    update_percents();
-  }
-  else if(repairman_weight_now - repairman_percent > .1 &&
-          (creep.memory.role == "claimer" || creep.memory.role == "builder")){
-    if(creep.memory.role == "claimer"){
-      claimercount -= 1;
-    }
-    else if(creep.memory.role == "builder"){
-      buildercount -= 1;
-    }
+    else if(repairman_weight_now - repairman_percent > .1 &&
+            (creep.memory.role == "claimer" || creep.memory.role == "builder")){
+      if(creep.memory.role == "claimer"){
+        claimercount -= 1;
+      }
+      else if(creep.memory.role == "builder"){
+        buildercount -= 1;
+      }
 
-    
-    creep.memory.role = "repairman";
-    repairmancount += 1;
-    update_percents();
-  }
-} 
-
+      
+      creep.memory.role = "repairman";
+      repairmancount += 1;
+      update_percents();
+    }
+  } 
+}
 
 for(var name in Game.creeps) {
   var creep = Game.creeps[name];
@@ -294,3 +296,5 @@ for(var name in Game.spawns) {
     }
 
 }
+
+Memory.timestep = Game.time;
