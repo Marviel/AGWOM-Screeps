@@ -265,7 +265,7 @@ for(var name in Game.spawns) {
       //TODO for loop with a low thresh.
       var last_able = harvester_main_parts;
       var this_one = last_able;
-      while(spawn.canCreateCreep(this_one)){
+      while(spawn.canCreateCreep(this_one) == OK){
         last_able = this_one;
         this_one = this_one.concat(harvester_main_parts);
       }
@@ -277,7 +277,7 @@ for(var name in Game.spawns) {
              weight_collector >= weight_builder){
       var last_able = collector_main_parts;
       var this_one = last_able;
-      while(spawn.canCreateCreep(this_one)){
+      while(spawn.canCreateCreep(this_one) == OK){
         last_able = this_one;
         this_one = this_one.concat(collector_main_parts);
       }
