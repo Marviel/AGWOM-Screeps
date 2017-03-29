@@ -11,12 +11,8 @@
         creep.memory.role = 'elderly';
     }
     else{
-        var sources = creep.pos.findClosestByRange(FIND_SOURCES, {
-          filter: function (object) {
-              return object.room = roomFlag.room;
-          }
-        });
-        creep.moveTo(sources[0]);
-        creep.harvest(sources[0]);    
+        var source = creep.pos.findClosestByRange(FIND_SOURCES);
+        creep.moveTo(source);
+        creep.harvest(source);    
     }
 }
