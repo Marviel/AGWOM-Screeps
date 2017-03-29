@@ -25,7 +25,7 @@ module.exports = function (creep, damaged, roomFlag, buildpriority, spawn) {
             }
           
             creep.moveTo(storloc);
-            storloc.transfer(creep, RESOURCE_ENERGY);
+            creep.withdraw(storloc, RESOURCE_ENERGY);
       }
       else{
             creep.moveTo(Game.flags.waitforspawner);
