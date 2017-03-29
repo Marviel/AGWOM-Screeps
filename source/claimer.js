@@ -14,13 +14,13 @@
         if(creep.room != roomFlag.room){
             creep.moveTo(roomFlag)
         }
-      if(creep.carry.energy < creep.carryCapacity) {
+      if(creep.carry.energy == 0) {
         creep.moveTo(spawn);
         creep.withdraw(spawn, RESOURCE_ENERGY); 
       }
       else {
-            creep.moveTo(creep.room.controller);
-        creep.transfer(creep.room.controller, RESOURCE_ENERGY);
+        creep.moveTo(creep.room.controller);
+        creep.upgradeController(creep.room.controller);
       }
     }
 }
