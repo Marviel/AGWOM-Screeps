@@ -92,12 +92,101 @@ for(var i in Memory.creeps) {
 //---------------------------------------------------------------------------------------
 //=-------------------------------ROLE ASSIGNMENT---------------------------------------
 //////////////////////////////////////////////////////////////////////////////////////////
+
+//Weights
+
+for(var name in Game.creeps) {
+  var creep = Game.creeps[name];
+  switch(creep.memory.role) {
+    case 'harvester':
+      harvestercount++;
+      break;
+    case 'repairman':
+      repairmancount++;
+      break;
+    case 'storer':
+      storercount++;
+      break;
+    case 'guard':
+      guardcount++;
+      break;
+    case 'builder':
+      buildercount++;
+      break;
+    case 'repairman':
+      repairmancount++;
+      break;
+    case 'claimer':
+      claimercount++;
+      break;
+    case 'collector':
+      collectorcount++;
+      break;
+    case 'elderly':
+      elderlycount++;
+      break;
+    default:
+      break;
+  }
+}
+
+var total_normal_workers = buildercount + claimercount + repairmancount; 
+var builder_percent = buildercount/total_normal_workers;
+var claimer_percent = claimercount/total_normal_workers;
+var repairman_percent = repairmancount/total_normal_workers;
+function update_percents(){
+  builder_percent = buildercount/total_normal_workers;
+  claimer_percent = claimercount/total_normal_workers;
+  repairman_percent = repairmancount/total_normal_workers;
+}
+
+var builder_weight_now = 1/3;
+var claimer_weight_now = 1/3;
+var repairman_weight_now = 1/3;
+extra_build_weight = 1/(Game.flags.room1.room.energyCapacityAvailable);
+builder_weight_now += extra_build_weight;
+claimer_weight_now -= extra_build_weight/2;
+repairman_weight_now -= extra_build_weight/2;
+
+
+//Convert creeps to approximate our new weights
+for(var name in Game.creeps){
+  var creep = Game.creeps[name];
+  
+  //If the weight of the builder isn't satisfied, satisfy that first.
+  if(builder_weight_now > builder_percent 
+      && (creep.memory.role == "claimer" || creep.memory.role == "repairman")){
+    creep.memory.role = "builder";
+    buildercount += 1;
+    claimercount -= 1;
+    repairmancount -= 1;
+    update_percents();
+  }
+  else if(claimer_weight_now - claimer_percent > .1
+            && (creep.memory.role == "repairman" || creep.memory.role == "builder")){
+    creep.memory.role = "claimer";
+    buildercount -= 1;
+    claimercount += 1;
+    repairmancount -= 1;
+    update_percents();
+  }
+  else if(repairman_weight_now - repairman_percent > .1 &&
+          (creep.memory.role == "claimer" || creep.memory.role == "builder")){
+    creep.memory.role = "repairman";
+    buildercount -= 1;
+    claimercount -= 1;
+    repairmancount += 1;
+    update_percents();
+  }
+} 
+
+
 for(var name in Game.creeps) {
   var creep = Game.creeps[name];
 
   if(creep.memory.role == 'harvester') {
     harvester(creep, Game.flags.room1); 
-      harvestercount++;
+    harvestercount++;
   }
 
   else if(creep.memory.role == 'builder') {

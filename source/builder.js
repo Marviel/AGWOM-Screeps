@@ -30,11 +30,12 @@ module.exports = function (creep, damaged, roomFlag, buildpriority, spawn) {
       else{
             creep.moveTo(Game.flags.waitforspawner);
       }
-      var prioritytarget = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
+      var prioritytarget = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES,
+          {
               filter: function (object) {
                   return object.type = buildpriority;
               }
-      });
+          });
           
       var targets;
       if(prioritytarget){ targets = [prioritytarget]; }
