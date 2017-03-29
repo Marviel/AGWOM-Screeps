@@ -6,7 +6,7 @@
  * var mod = require('collector'); // -> 'a thing'
  */
  
-  module.exports = function (creep, roomFlag) {
+  module.exports = function (creep, roomFlag, spawn) {
     if(creep.ticksToLive < 60){
         creep.memory.role = 'elderly';
     }
