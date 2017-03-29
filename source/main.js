@@ -244,7 +244,7 @@ Memory.collectorcount = collectorcount;
 //////////////////////////////////////////////////////////////////////////////////////////
 if(Memory.lastSpawn == undefined){ Memory.lastSpawn = Game.time }
 if(firstroomflag.room.energyAvailable > min_spawn_energy ||
-    Game.spawnsGame.time - Memory.lastSpawn > spawnInterval){
+    Game.time - Memory.lastSpawn > spawnInterval){
   Memory.lastSpawn = Game.time;
   //Make spawns do things
   for(var name in Game.spawns) {
